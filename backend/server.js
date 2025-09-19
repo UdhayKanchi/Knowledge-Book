@@ -1,71 +1,80 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+require("dotenv").config();
 
 const app = express();
-app.use(express.json());
-app.use(cors());
+const PORT = process.env.PORT || 5000;
 
-// MongoDB connection
-const mongoURI = process.env.MONGODB_URI; // Use the fixed URI from Render env
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.log("❌ MongoDB Connection Error:", err));
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// User schema (will use 'Credentials' collection)
+// Serve frontend files (static HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// ✅ MongoDB Connection
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
+
+// ✅ Define Schema & Model
 const userSchema = new mongoose.Schema({
   name: String,
-  username: { type: String, unique: true }, // email/username
-  password: String
+  username: String,
+  password: String,
 });
 
-// Explicitly tell Mongoose to use the 'Credentials' collection
-const User = mongoose.model("Credentials", userSchema, "Credentials");
+const User = mongoose.model("Credentials", userSchema);
 
-// Registration route
+// ✅ Default route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/login.html"));
+});
+
+// ✅ Register Route
 app.post("/register", async (req, res) => {
   try {
     const { name, username, password } = req.body;
-    if (!name || !username || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, username, password: hashedPassword });
-
+    const newUser = new User({ name, username, password });
     await newUser.save();
-    res.json({ message: "User registered successfully" });
+    res.status(201).json({ message: "Registration successful" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Login route
+// ✅ Login Route
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await User.findOne({ username });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const user = await User.findOne({ username, password });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-    res.json({ message: "Login successful" });
+    res.status(200).json({ message: "Login successful" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+// ✅ Start Server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});

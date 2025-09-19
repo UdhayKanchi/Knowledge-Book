@@ -1,15 +1,14 @@
 {
-  "name": "student-portal-backend",
+  "name": "student-site-backend",
   "version": "1.0.0",
-  "description": "Backend for Student Portal with registration and login",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^7.0.3",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5"
+    "mongoose": "^7.0.0",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3"
   }
 }
