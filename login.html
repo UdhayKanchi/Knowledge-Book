@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Portal Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      /* Matched the hero section background from index.html */
+      background: linear-gradient(135deg, #eef2f8, #f9fbfd);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+
+    .login-box {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      /* Matched the subtle shadow from the feature cards */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      /* Added a top border using the primary brand color for extra flair */
+      border-top: 5px solid #5d5dff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #5d5dff; /* Primary brand color */
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #666; /* Subtitle color from index */
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #e0e6ed;
+      border-radius: 10px;
+      font-size: 15px;
+      background-color: #eef2f8; /* Input background matches main background */
+      color: #333;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #5d5dff;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 50px; /* Matched pill-shape buttons from index */
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn {
+      /* Matched the main button gradient */
+      background: linear-gradient(45deg, #5d5dff, #8a8aff);
+      color: white;
+      box-shadow: 0 10px 20px rgba(93, 93, 255, 0.25);
+    }
+
+    .login-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(93, 93, 255, 0.35);
+    }
+
+    .register-btn {
+      /* Matched the secondary CTA button */
+      background: #ff6b6b;
+      color: white;
+      margin-top: 15px;
+      box-shadow: 0 10px 20px rgba(255, 107, 107, 0.25);
+    }
+
+    .register-btn:hover {
+      background: #ff4c4c;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(255, 107, 107, 0.35);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-box">
+    <h2>Access Portal</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Email or Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" />
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+      <button type="button" class="register-btn" onclick="redirectToRegister()">Create Account</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const usernameInput = document.getElementById("username").value.trim();
+      const passwordInput = document.getElementById("password").value.trim();
+
+      if (usernameInput === "" || passwordInput === "") {
+        alert("Please enter your details.");
+        return;
+      }
+
+      // 3 Dummy Credentials
+      const user1 = { username: "uday123@gmail.com", password: "123456789" };
+      const user2 = { username: "mani@gmail.com", password: "987654321" };
+      const user3 = { username: "admin", password: "adminpass" };
+
+      // Testing credentials using the == operator
+      if (usernameInput == user1.username && passwordInput == user1.password) {
+        alert("Login successful! Welcome Uday.");
+        window.location.href = "home.html";
+      } else if (usernameInput == user2.username && passwordInput == user2.password) {
+        alert("Login successful! Welcome Bharath.");
+        window.location.href = "home.html";
+      } else if (usernameInput == user3.username && passwordInput == user3.password) {
+        alert("Login successful! Welcome Admin.");
+        window.location.href = "home.html";
+      } else {
+        alert("Login failed: Invalid email/username or password.");
+      }
+    });
+
+    function redirectToRegister() {
+      window.location.href = "register.html";
+    }
+  </script>
+</body>
+
+</html>
