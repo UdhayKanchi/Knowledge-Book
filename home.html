@@ -4,36 +4,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Knowledge Book</title>
+  <title>Knowledge Book - Home</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    /* Reset */
+    /* Reset & Base */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: "Poppins", sans-serif;
+      font-family: "Nunito", "Poppins", sans-serif;
+      scroll-behavior: smooth;
     }
 
     body {
-      background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+      /* Beautiful dark gradient overlay to make text pop */
+      background: linear-gradient(rgba(10, 15, 30, 0.85), rgba(15, 23, 42, 0.9)),
+        url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
       color: #fff;
       background-attachment: fixed;
       overflow-x: hidden;
-      animation: bgMove 40s infinite linear;
     }
 
-    @keyframes bgMove {
-      0% {
-        background-position: center;
-      }
-
-      50% {
-        background-position: top;
-      }
-
-      100% {
-        background-position: center;
-      }
+    /* Floating Particles Background */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 30%, rgba(0, 234, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 46, 99, 0.05) 0%, transparent 50%);
     }
 
     /* Navbar */
@@ -41,13 +47,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 52, 96, 0.8);
+      background: rgba(255, 255, 255, 0.05);
       padding: 15px 50px;
       position: sticky;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       animation: fadeDown 1s ease-out;
     }
 
@@ -64,71 +71,21 @@
     }
 
     .navbar h1 {
-      font-size: 28px;
+      font-size: 26px;
+      font-weight: 800;
       color: #fff;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-shadow: 0 0 10px cyan, 0 0 20px #00eaff;
-      animation: glowPulse 2s infinite alternate;
-    }
-
-    @keyframes glowPulse {
-      from {
-        text-shadow: 0 0 10px cyan, 0 0 20px #00eaff;
-      }
-
-      to {
-        text-shadow: 0 0 20px #ff2e63, 0 0 40px #ff0055;
-      }
-    }
-
-    .search-box input {
-      padding: 8px 12px;
-      border-radius: 20px;
-      border: none;
-      outline: none;
-      width: 220px;
-      transition: all 0.3s;
-    }
-
-    .search-box input:focus {
-      box-shadow: 0 0 15px #00eaff, 0 0 25px #0072ff;
-      transform: scale(1.05);
-    }
-
-    /* Hero */
-    .hero {
-      height: 70vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      position: relative;
-      padding-bottom: 100px;
-      animation: fadeIn 2s ease-in;
+      gap: 10px;
+      letter-spacing: 1px;
     }
 
-    @keyframes fadeIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
+    .navbar h1 i {
+      color: #00eaff;
+      animation: bounceSoft 2s infinite;
     }
 
-    .hero h2 {
-      font-size: 52px;
-      text-shadow: 0 0 20px #000, 0 0 40px rgba(0, 255, 255, 0.6);
-      margin-bottom: 50px;
-      animation: floatText 3s ease-in-out infinite;
-    }
-
-    @keyframes floatText {
+    @keyframes bounceSoft {
 
       0%,
       100% {
@@ -136,202 +93,388 @@
       }
 
       50% {
-        transform: translateY(-10px);
+        transform: translateY(-5px);
       }
     }
 
-    .hero button {
-      padding: 14px 40px;
-      font-size: 20px;
-      border: none;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Upgraded Search Box */
+    .search-box {
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      transition: 0.3s;
+    }
+
+    .search-box input {
+      padding: 10px 15px 10px 40px;
       border-radius: 30px;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      outline: none;
+      width: 250px;
+      background: rgba(255, 255, 255, 0.1);
       color: white;
-      cursor: pointer;
-      transition: all 0.4s;
-      box-shadow: 0 0 20px #ff2e63, 0 0 40px rgba(255, 46, 99, 0.6);
-      animation: pulseBtn 2s infinite alternate;
+      font-size: 15px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes pulseBtn {
-      from {
-        transform: scale(1);
-        box-shadow: 0 0 15px #ff2e63;
-      }
-
-      to {
-        transform: scale(1.1);
-        box-shadow: 0 0 30px #ff0055;
-      }
+    .search-box input::placeholder {
+      color: #bbb;
     }
 
-    .hero button:hover {
-      background: linear-gradient(45deg, #ff2e63, #ff416c);
-      transform: scale(1.15) rotate(-1deg);
+    .search-box input:focus {
+      width: 300px;
+      background: rgba(255, 255, 255, 0.15);
+      border-color: #00eaff;
+      box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
     }
 
-    /* Courses */
-    .courses {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-      padding: 50px;
-      animation: fadeUp 1.5s ease-in;
+    .search-box input:focus+i {
+      color: #00eaff;
     }
 
-    @keyframes fadeUp {
+    /* Logout Button */
+    .logout-btn {
+      background: rgba(255, 65, 108, 0.2);
+      color: #ff416c;
+      border: 1px solid #ff416c;
+      padding: 8px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background: #ff416c;
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 65, 108, 0.4);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      padding: 0 20px;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    @keyframes fadeIn {
       0% {
         opacity: 0;
-        transform: translateY(50px);
+        transform: scale(0.95);
       }
 
       100% {
         opacity: 1;
-        transform: translateY(0);
+        transform: scale(1);
       }
     }
 
-    .course-box {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      transition: all 0.4s;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      position: relative;
-      overflow: hidden;
+    /* Dynamic Greeting Feature */
+    .greeting {
+      background: rgba(0, 234, 255, 0.1);
+      color: #00eaff;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 234, 255, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
+    .hero h2 {
+      font-size: clamp(30px, 5vw, 55px);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #ffffff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: #cbd5e1;
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+
+    .hero button {
+      padding: 16px 45px;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      color: white;
+      cursor: pointer;
+      transition: all 0.4s;
+      box-shadow: 0 10px 20px rgba(255, 65, 108, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px rgba(255, 65, 108, 0.5);
+    }
+
+    /* Courses Grid */
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 60px 50px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Premium Glassmorphic Cards */
+    .course-box {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 30px 25px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Hover Glow Effect */
     .course-box::before {
       content: "";
       position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transform: skewY(45deg);
-      transition: 0.5s;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
     }
 
     .course-box:hover::before {
-      top: 200%;
+      opacity: 1;
     }
 
     .course-box:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 0 25px #00eaff, 0 0 40px rgba(0, 255, 255, 0.4);
+      transform: translateY(-12px);
+      border-color: rgba(0, 234, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 234, 255, 0.15);
+    }
+
+    .course-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      background: linear-gradient(45deg, #00eaff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .course-box h3 {
-      margin-bottom: 15px;
-      font-size: 22px;
-      text-shadow: 0 0 8px #00eaff;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
-    /* Roadmaps Button Red Gradient & Red Font */
+    /* Elegant Roadmaps Button */
     .roadmap-btn {
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
       text-decoration: none;
-      background: linear-gradient(45deg, #ff0000, #ff4b2b);
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
       color: #fff;
-      font-weight: bold;
+      font-weight: 700;
       padding: 12px;
-      margin: 12px 0;
-      border-radius: 30px;
-      transition: 0.3s;
-      box-shadow: 0 0 20px #ff2e63, 0 0 30px rgba(255, 46, 99, 0.6);
-      animation: pulseGlow 1.5s infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-      from {
-        box-shadow: 0 0 10px #ff2e63;
-      }
-
-      to {
-        box-shadow: 0 0 25px #ff0000, 0 0 40px rgba(255, 0, 0, 0.6);
-      }
+      margin: 15px 0;
+      border-radius: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 117, 140, 0.3);
     }
 
     .roadmap-btn:hover {
-      background: linear-gradient(45deg, #ff4b2b, #ff0000);
-      transform: scale(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(255, 117, 140, 0.5);
+      background: linear-gradient(135deg, #ff7eb3, #ff758c);
     }
 
-    /* Other Links */
-    .course-box a {
-      display: block;
-      text-decoration: none;
-      background: #0f3460;
-      color: #fff;
-      padding: 10px;
+    /* Subject Tags (Interactive Divs instead of Links) */
+    .subject-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+      padding: 12px 15px;
       margin: 8px 0;
-      border-radius: 8px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
       transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
+      border: 1px solid transparent;
+      cursor: pointer;
     }
 
-    .course-box a::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.2);
-      transition: 0.3s;
+    .subject-tag:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: rgba(0, 234, 255, 0.3);
+      transform: translateX(5px);
+      box-shadow: 0 4px 10px rgba(0, 234, 255, 0.1);
     }
 
-    .course-box a:hover::after {
-      left: 0;
-    }
-
-    .course-box a:hover {
-      background: #16213e;
-      transform: scale(1.05);
+    .subject-tag i {
+      color: #a5b4fc;
+      font-size: 14px;
     }
 
     /* Footer */
     footer {
-      background: rgba(15, 52, 96, 0.9);
+      background: rgba(10, 15, 30, 0.95);
       text-align: center;
-      padding: 25px;
-      margin-top: 50px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.4);
-      animation: fadeIn 2s ease-in;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 40px;
     }
 
     footer p {
-      margin: 8px 0;
-      color: #ddd;
+      color: #94a3b8;
+      margin-bottom: 10px;
     }
 
-    footer a {
-      color: #ff416c;
-      text-decoration: none;
+    .social-links {
+      margin-top: 15px;
+    }
+
+    .social-links a {
+      color: #94a3b8;
+      font-size: 20px;
       margin: 0 10px;
       transition: 0.3s;
     }
 
-    footer a:hover {
+    .social-links a:hover {
+      color: #ff416c;
+      transform: scale(1.2);
+    }
+
+    /* Floating Action Button (Back to Top) */
+    .fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #00eaff;
+      color: #0f172a;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      text-decoration: none;
+      box-shadow: 0 10px 25px rgba(0, 234, 255, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+
+    .fab.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .fab:hover {
+      transform: translateY(-5px);
+      background: #fff;
+    }
+
+    /* Cute Toast Notification Styling */
+    .toast {
+      position: fixed;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #00eaff, #0072ff);
       color: #fff;
-      text-shadow: 0 0 10px #ff416c;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 10px 20px rgba(0, 234, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      bottom: 40px;
+      opacity: 1;
     }
 
     /* Responsive */
-    @media (max-width: 1000px) {
-      .courses {
-        grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
       }
-    }
 
-    @media (max-width: 600px) {
+      .nav-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+
+      .search-box input:focus {
+        width: 100%;
+      }
+
       .courses {
-        grid-template-columns: 1fr;
+        padding: 40px 20px;
       }
     }
   </style>
@@ -339,74 +482,147 @@
 
 <body>
 
-  <!-- Navbar -->
+  <div class="particles"></div>
+
   <div class="navbar">
-    <h1>Knowledge Book</h1>
-    <div class="search-box">
-      <input type="text" placeholder="Search courses...">
+    <h1><i class="fa-solid fa-book-open-reader"></i> Knowledge Book</h1>
+    <div class="nav-actions">
+      <div class="search-box">
+        <input type="text" placeholder="Search courses, notes...">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <a href="login.html" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
     </div>
   </div>
 
-  <!-- Hero -->
   <section class="hero">
-    <h2>Explore Free Resources, Notes & Roadmaps</h2>
+    <div class="greeting" id="greetingMsg">
+      <i class="fa-regular fa-sun"></i> Good Morning, Learner!
+    </div>
+    <h2>Explore Free Resources,<br> Notes & Roadmaps</h2>
+    <p>Your beautiful, all-in-one portal to master programming, business, and data science. Let's make learning adorable
+      and unstoppable.</p>
     <button onclick="document.getElementById('courses').scrollIntoView({behavior: 'smooth'})">
-      Get Started
+      Start Exploring <i class="fa-solid fa-rocket"></i>
     </button>
   </section>
 
-  <!-- Courses -->
   <section class="courses" id="courses">
-    <!-- BSc -->
+
     <div class="course-box">
-      <h3>BSc</h3>
-      <a href="roadmaps.html" class="roadmap-btn">Roadmaps</a>
-      <a href="#">C Programming</a>
-      <a href="#">Java</a>
-      <a href="#">DBMS</a>
-      <a href="#">Operating Systems</a>
+      <div class="course-icon"><i class="fa-solid fa-laptop-code"></i></div>
+      <h3>BSc CS</h3>
+      <a href="roadmaps.html" class="roadmap-btn"><i class="fa-solid fa-map-location-dot"></i> View Roadmaps</a>
+      <div class="subject-tag" onclick="showToast('C Programming materials coming soon!')"><i
+          class="fa-brands fa-c"></i> C Programming</div>
+      <div class="subject-tag" onclick="showToast('Java materials coming soon!')"><i class="fa-brands fa-java"></i> Java
+      </div>
+      <div class="subject-tag" onclick="showToast('DBMS materials coming soon!')"><i class="fa-solid fa-database"></i>
+        DBMS</div>
+      <div class="subject-tag" onclick="showToast('OS materials coming soon!')"><i class="fa-brands fa-linux"></i>
+        Operating Systems</div>
     </div>
 
-    <!-- BBA -->
     <div class="course-box">
+      <div class="course-icon"><i class="fa-solid fa-briefcase"></i></div>
       <h3>BBA</h3>
-      <a href="roadmaps.html" class="roadmap-btn">Roadmaps</a>
-      <a href="#">Business Management</a>
-      <a href="#">Economics</a>
-      <a href="#">Accounting</a>
-      <a href="#">Marketing</a>
+      <a href="roadmaps.html" class="roadmap-btn"><i class="fa-solid fa-map-location-dot"></i> View Roadmaps</a>
+      <div class="subject-tag" onclick="showToast('Business Management coming soon!')"><i
+          class="fa-solid fa-chart-pie"></i> Business Management</div>
+      <div class="subject-tag" onclick="showToast('Economics coming soon!')"><i
+          class="fa-solid fa-money-bill-trend-up"></i> Economics</div>
+      <div class="subject-tag" onclick="showToast('Accounting coming soon!')"><i class="fa-solid fa-calculator"></i>
+        Accounting</div>
+      <div class="subject-tag" onclick="showToast('Marketing coming soon!')"><i class="fa-solid fa-bullhorn"></i>
+        Marketing</div>
     </div>
 
-    <!-- BCA -->
     <div class="course-box">
+      <div class="course-icon"><i class="fa-solid fa-code"></i></div>
       <h3>BCA</h3>
-      <a href="roadmaps.html" class="roadmap-btn">Roadmaps</a>
-      <a href="#">Python</a>
-      <a href="#">Data Structures</a>
-      <a href="#">Web Development</a>
-      <a href="#">Networking</a>
+      <a href="roadmaps.html" class="roadmap-btn"><i class="fa-solid fa-map-location-dot"></i> View Roadmaps</a>
+      <div class="subject-tag" onclick="showToast('Python materials coming soon!')"><i class="fa-brands fa-python"></i>
+        Python</div>
+      <div class="subject-tag" onclick="showToast('Data Structures coming soon!')"><i class="fa-solid fa-sitemap"></i>
+        Data Structures</div>
+      <div class="subject-tag" onclick="showToast('Web Dev materials coming soon!')"><i class="fa-brands fa-html5"></i>
+        Web Development</div>
+      <div class="subject-tag" onclick="showToast('Networking coming soon!')"><i class="fa-solid fa-network-wired"></i>
+        Networking</div>
     </div>
 
-    <!-- Data Science -->
     <div class="course-box">
+      <div class="course-icon"><i class="fa-solid fa-chart-line"></i></div>
       <h3>Data Science</h3>
-      <a href="roadmaps.html" class="roadmap-btn">Roadmaps</a>
-      <a href="#">Machine Learning</a>
-      <a href="#">Data Analytics</a>
-      <a href="#">AI Basics</a>
-      <a href="#">Statistics</a>
+      <a href="roadmaps.html" class="roadmap-btn"><i class="fa-solid fa-map-location-dot"></i> View Roadmaps</a>
+      <div class="subject-tag" onclick="showToast('Machine Learning coming soon!')"><i class="fa-solid fa-robot"></i>
+        Machine Learning</div>
+      <div class="subject-tag" onclick="showToast('Data Analytics coming soon!')"><i class="fa-solid fa-chart-bar"></i>
+        Data Analytics</div>
+      <div class="subject-tag" onclick="showToast('AI Basics coming soon!')"><i class="fa-solid fa-brain"></i> AI Basics
+      </div>
+      <div class="subject-tag" onclick="showToast('Statistics coming soon!')"><i
+          class="fa-solid fa-square-root-variable"></i> Statistics</div>
     </div>
+
   </section>
 
-  <!-- Footer -->
   <footer>
-    <p>© 2025 Knowledge Book. All rights reserved.</p>
-    <p>
-      <a href="#">Privacy Policy</a> |
-      <a href="#">Terms of Service</a> |
-      <a href="contact.html">Contact</a>
-    </p>
+    <p>© 2026 Knowledge Book. Designed with ❤️</p>
+    <div class="social-links">
+      <a href="#"><i class="fa-brands fa-github"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    </div>
   </footer>
+
+  <a href="#" class="fab" id="backToTop"><i class="fa-solid fa-arrow-up"></i></a>
+
+  <div class="toast" id="toastMsg"><i class="fa-solid fa-bell"></i> <span id="toastText">Materials coming soon!</span>
+  </div>
+
+  <script>
+    // Feature 1: Dynamic Greeting based on time of day
+    const setGreeting = () => {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById('greetingMsg');
+      if (hour < 12) {
+        greetingEl.innerHTML = '<i class="fa-regular fa-sun"></i> Good Morning, Learner!';
+      } else if (hour < 18) {
+        greetingEl.innerHTML = '<i class="fa-solid fa-cloud-sun"></i> Good Afternoon, Learner!';
+      } else {
+        greetingEl.innerHTML = '<i class="fa-solid fa-moon"></i> Good Evening, Learner!';
+      }
+    };
+    setGreeting();
+
+    // Feature 2: Show/Hide Floating Action Button on Scroll
+    window.addEventListener('scroll', () => {
+      const fab = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        fab.classList.add('show');
+      } else {
+        fab.classList.remove('show');
+      }
+    });
+
+    // Feature 3: Toast Notification logic
+    let toastTimeout;
+    function showToast(message) {
+      const toast = document.getElementById('toastMsg');
+      const toastText = document.getElementById('toastText');
+
+      toastText.innerText = message;
+      toast.classList.add('show');
+
+      // Clear timeout so it doesn't hide too early if clicked rapidly
+      clearTimeout(toastTimeout);
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000); // Hides after 3 seconds
+    }
+  </script>
 
 </body>
 
