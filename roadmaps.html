@@ -1,135 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Roadmaps in Software & IT</title>
+  <title>Knowledge Book - Career Roadmaps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    /* Customized background */
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-      color: #fff;
+    /* Reset & Base */
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px;
-      position: relative;
-      min-height: 100vh; /* Ensures body takes full viewport height */
+      padding: 0;
+      font-family: 'Nunito', 'Poppins', sans-serif;
     }
 
-    /* Star particles for cosmic effect */
+    body {
+      background: linear-gradient(rgba(10, 15, 30, 0.9), rgba(15, 23, 42, 0.95)), 
+                  url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover;
+      background-attachment: fixed;
+      color: #fff;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* Floating Particles Background */
     body::before {
       content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle cx="10" cy="10" r="0.5" fill="%23fff" /%3E%3Ccircle cx="20" cy="50" r="0.3" fill="%23fff" /%3E%3Ccircle cx="30" cy="80" r="0.4" fill="%23fff" /%3E%3Ccircle cx="40" cy="20" r="0.6" fill="%23fff" /%3E%3Ccircle cx="50" cy="60" r="0.2" fill="%23fff" /%3E%3Ccircle cx="60" cy="90" r="0.5" fill="%23fff" /%3E%3Ccircle cx="70" cy="30" r="0.3" fill="%23fff" /%3E%3Ccircle cx="80" cy="70" r="0.4" fill="%23fff" /%3E%3Ccircle cx="90" cy="40" r="0.6" fill="%23fff" /%3E%3C/svg%3E') repeat;
-      opacity: 0.1;
-      animation: twinkle 5s infinite;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 15% 50%, rgba(0, 234, 255, 0.05) 0%, transparent 50%),
+                  radial-gradient(circle at 85% 30%, rgba(255, 46, 99, 0.05) 0%, transparent 50%);
       z-index: -1;
+      pointer-events: none;
     }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.1; }
-      50% { opacity: 0.3; }
-    }
-
-    h1 {
+    /* Header Styling */
+    .header-container {
       text-align: center;
-      font-size: 2.8em;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
       animation: fadeInDown 1s ease-out;
     }
 
-    /* Search bar */
-    #search {
-      display: block;
-      margin: 0 auto 30px;
-      padding: 10px 15px;
-      width: 80%;
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      background: linear-gradient(to right, #00eaff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+    }
+
+    .header-container p {
+      color: #94a3b8;
+      font-size: 1.1rem;
       max-width: 600px;
-      border-radius: 20px;
-      border: none;
-      font-size: 1em;
-      animation: fadeIn 1s ease-out;
-      background: rgba(255, 255, 255, 0.9);
-      color: #333;
+      margin: 0 auto 30px;
+    }
+
+    /* Back Button */
+    .back-btn {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      color: #00eaff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.3s;
+      background: rgba(0, 234, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 234, 255, 0.3);
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 234, 255, 0.2);
+      transform: translateX(-5px);
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00eaff;
+      font-size: 1.2rem;
+    }
+
+    #search {
+      width: 100%;
+      padding: 15px 20px 15px 50px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 234, 255, 0.3);
+      font-size: 1.1em;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
     }
 
     #search:focus {
       outline: none;
-      box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
+      border-color: #00eaff;
     }
 
-    /* Card styles */
+    /* --- Sectors --- */
+    .sector {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .sector-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sector-title i {
+      color: #ff416c;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    /* Card Styles (Glassmorphism Dark Mode) */
     .roadmap-card {
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      margin: 20px auto;
-      padding: 20px;
-      max-width: 900px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 25px;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      color: #333;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       position: relative;
+      overflow: hidden;
     }
 
     .roadmap-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+      border-color: rgba(0, 234, 255, 0.4);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 234, 255, 0.1);
     }
 
     .role-title {
-      font-size: 1.8em;
-      color: #007bff;
-      margin-bottom: 15px;
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #00eaff;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: color 0.3s;
+    }
+
+    .roadmap-card:hover .role-title {
+      color: #fff;
     }
 
     .expand-icon {
       font-size: 1.2em;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
+      color: #94a3b8;
     }
 
     .roadmap-card.active .expand-icon {
       transform: rotate(45deg);
+      color: #ff416c;
+    }
+
+    /* Tables (Hidden by default, styled for Dark Mode) */
+    .table-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease-out;
+    }
+
+    .roadmap-card.active .table-wrapper {
+      max-height: 1000px; /* Arbitrary large number to allow expansion */
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
-      display: none;
-      animation: slideDown 0.5s ease-out forwards;
-    }
-
-    .roadmap-card.active table {
-      display: table;
+      margin-top: 20px;
+      font-size: 0.95em;
     }
 
     th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
+      padding: 12px 15px;
       text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     th {
-      background: #007bff;
-      color: white;
-      font-weight: 600;
+      background: rgba(0, 234, 255, 0.1);
+      color: #00eaff;
+      font-weight: 700;
+      border-radius: 5px;
     }
 
     td {
-      background: #f9f9f9;
+      color: #cbd5e1;
       transition: background 0.3s ease;
     }
 
-    td:hover {
-      background: #e6f3ff;
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
     }
 
     /* Animations */
@@ -137,238 +238,300 @@
       from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
-      #search { width: 95%; }
-      .roadmap-card { padding: 15px; }
-      .role-title { font-size: 1.5em; }
-      h1 { font-size: 2.2em; }
-      th, td { padding: 10px; font-size: 0.9em; }
+      .back-btn { top: 15px; left: 15px; font-size: 0.9rem; padding: 8px 15px; }
+      h1 { margin-top: 40px; }
+      .sector-title { font-size: 1.6rem; }
+      .roadmap-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <h1>🌟 Explore Your Tech Career Roadmaps 🌟</h1>
+  <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Home</a>
 
-  <input type="text" id="search" placeholder="Search for a role (e.g., Frontend, DevOps)...">
-
-  <!-- Frontend Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Frontend Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>HTML, CSS, JavaScript, Responsive design, Git</td><td>Portfolio website, Static landing pages, Small interactive components</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>React/Angular/Vue, State management, API integration, SPA routing, Testing basics</td><td>Interactive SPA apps, Dashboard/blog apps, E-commerce frontend</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Performance optimization, PWA, TypeScript, Accessibility, Frontend architecture</td><td>Large-scale production SPAs, PWAs, Optimized & maintainable frontends</td></tr>
-    </table>
+  <div class="header-container">
+    <h1>Career Roadmaps</h1>
+    <p>Select a sector below to view detailed timelines, required skills, and expected outcomes for your tech career journey.</p>
+    
+    <div class="search-wrapper">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="search" placeholder="Search for a role (e.g., Frontend, DevOps)...">
+    </div>
   </div>
 
-  <!-- Backend Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Backend Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Python/Java/Node.js, REST APIs, SQL basics, Git, Basic server management</td><td>Simple APIs, CRUD applications, Database-driven apps</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Advanced SQL/NoSQL, Microservices, Authentication, Caching, Testing</td><td>Scalable APIs, Authentication systems, Data processing pipelines</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Distributed systems, Cloud platforms, DevOps, Scalability, Performance tuning</td><td>High-traffic APIs, Microservices architecture, Cloud-native systems</td></tr>
-    </table>
+  <div class="sector">
+    <h2 class="sector-title"><i class="fa-solid fa-code"></i> Software & Web Development</h2>
+    <div class="roadmap-grid">
+      
+      <div class="roadmap-card">
+        <div class="role-title">Frontend Developer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>HTML, CSS, JS, Git, Landing Pages</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>React/Vue, APIs, SPA Routing</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>TypeScript, PWA, Architecture</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Backend Developer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Node.js/Python, REST APIs, SQL basics</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Advanced SQL, Auth, Caching, Microservices</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Cloud platforms, DevOps, Scalability</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Full-Stack Developer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>MERN Stack basics, CRUD apps, Git</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>API design, DB Management, Full Deployment</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Cloud native, Architecture, Scalable SaaS</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Mobile Developer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Swift/Kotlin basics, UI/UX, REST API</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Flutter/React Native, State Management</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Native Optimization, CI/CD, App Stores</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Full-Stack Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Full-Stack Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>HTML, CSS, JavaScript, React/Angular, Node.js, Express, REST APIs, Git</td><td>Portfolio website, CRUD apps, Simple blog app</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Advanced backend, SQL/NoSQL, State management, API design, Full-stack deployment</td><td>Blog with authentication, E-commerce app, Task manager APIs</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Cloud platforms, DevOps, Testing, Scalable architecture</td><td>Scalable SaaS apps, Cloud-deployed apps, Open-source contributions</td></tr>
-    </table>
+  <div class="sector">
+    <h2 class="sector-title"><i class="fa-solid fa-brain"></i> Data & Artificial Intelligence</h2>
+    <div class="roadmap-grid">
+      
+      <div class="roadmap-card">
+        <div class="role-title">Data Scientist <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Python, Stats, SQL, Pandas, Visualization</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Machine Learning, A/B Testing, Cloud</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Deep Learning, Model Deployment, Spark</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">ML Engineer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>TensorFlow/PyTorch, Linear Algebra, NLP</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Deep Learning, Data Pipelines, Inference</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>MLOps, Reinforcement Learning, Scale</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">AI Engineer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Neural Networks, Preprocessing, Chatbots</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Computer Vision, Deep NLP, Tuning</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Generative AI, Ethics, LLM Integration</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- Mobile Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Mobile Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Swift/Kotlin, UI/UX basics, REST API integration, Git</td><td>Simple mobile apps, To-do list apps, UI prototypes</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Flutter/React Native, State management, Testing</td><td>Multi-screen apps, Social media clones, E-commerce mobile apps</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Native optimization, CI/CD, Push notifications, App store deployment</td><td>Production-grade apps, Scalable mobile backends</td></tr>
-    </table>
+  <div class="sector">
+    <h2 class="sector-title"><i class="fa-solid fa-server"></i> Cloud, Infra & Security</h2>
+    <div class="roadmap-grid">
+      
+      <div class="roadmap-card">
+        <div class="role-title">DevOps Engineer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Linux, Docker, Basic CI/CD, Git</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Kubernetes, Terraform, Monitoring</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Serverless, SecOps, Chaos Engineering</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Cloud Architect <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>AWS/GCP basics, Networking, Storage</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Cloud-native design, Containers, Cost Ops</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Multi-cloud, Governance, Disaster Recovery</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Cybersecurity <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Networks, Linux, Encryption, Audits</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Ethical Hacking, SIEM, Incident Response</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Threat Hunting, Cloud Security, Red Team</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Database Admin <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>SQL, Data Modeling, Backups</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>NoSQL, Replication, Performance Tuning</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Cloud DBs, Big Data Integration, Automation</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="roadmap-card">
+        <div class="role-title">Network Engineer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>TCP/IP, Routing, Cisco basics</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Firewalls, VPNs, Wireless, Monitoring</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>SDN, Cloud Networking, Python Automation</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- DevOps Engineer -->
-  <div class="roadmap-card">
-    <div class="role-title">DevOps Engineer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Linux basics, Docker, CI/CD pipelines, Git, AWS/GCP/Azure basics</td><td>Containerized apps, Simple CI/CD pipelines, Cloud-hosted services</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Kubernetes, Terraform, Monitoring, Scripting</td><td>Scalable deployments, Automated infrastructure, Monitoring dashboards</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Advanced Kubernetes, Serverless, Security, Chaos engineering</td><td>Highly available systems, Serverless apps, Secure pipelines</td></tr>
-    </table>
-  </div>
+  <div class="sector">
+    <h2 class="sector-title"><i class="fa-solid fa-pen-nib"></i> Specialized & Management</h2>
+    <div class="roadmap-grid">
+      
+      <div class="roadmap-card">
+        <div class="role-title">UI/UX Designer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Figma, Design Principles, Wireframing</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Prototyping, Usability Testing, UX Writing</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Design Systems, A/B Testing, Accessibility</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <!-- Data Scientist -->
-  <div class="roadmap-card">
-    <div class="role-title">Data Scientist <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Python/R, Statistics, SQL, Data visualization, Pandas/Numpy</td><td>Basic data analysis, Visualization dashboards, Simple predictive models</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Machine learning, Feature engineering, A/B testing, Cloud data tools</td><td>Predictive models, Recommendation systems, A/B test analysis</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Deep learning, Spark, Model deployment, Experiment design</td><td>Production ML models, Scalable data pipelines, Business impact analysis</td></tr>
-    </table>
-  </div>
+      <div class="roadmap-card">
+        <div class="role-title">QA Engineer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Manual Testing, Bug Tracking, Selenium</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>API Testing, Performance, CI/CD Integration</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>End-to-End Pipelines, Security Testing</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <!-- Machine Learning Engineer -->
-  <div class="roadmap-card">
-    <div class="role-title">Machine Learning Engineer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Python, TensorFlow/PyTorch, Linear algebra, Basic ML algorithms</td><td>Simple ML models, Image classification, Basic NLP tasks</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Deep learning, Model optimization, Data pipelines, Cloud ML tools</td><td>Advanced neural networks, Real-time inference, Scalable ML pipelines</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Reinforcement learning, MLOps, Model interpretability, Scalable training</td><td>Production ML systems, Automated pipelines, AI solutions</td></tr>
-    </table>
-  </div>
+      <div class="roadmap-card">
+        <div class="role-title">IT Manager <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Agile/Scrum, Jira, Basic Planning</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Risk Management, Budgeting, Stakeholders</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>PMP Cert, Portfolio Management, Leadership</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <!-- Cybersecurity Specialist -->
-  <div class="roadmap-card">
-    <div class="role-title">Cybersecurity Specialist <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Networking, Linux, Basic encryption, Penetration testing basics</td><td>Vulnerability assessments, Security audits, Secure configurations</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Ethical hacking, SIEM tools, Incident response, Secure coding</td><td>Penetration testing reports, Incident response plans, Secure apps</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Threat hunting, Cloud security, Advanced cryptography, Red teaming</td><td>Enterprise security solutions, Red team exercises, Zero-trust systems</td></tr>
-    </table>
-  </div>
+      <div class="roadmap-card">
+        <div class="role-title">Blockchain Dev <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>Cryptography, Solidity, Smart Contracts</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>DApps, Web3, Security Audits</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>Layer 2, Cross-chain, Decentralized Gov</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <!-- Cloud Architect -->
-  <div class="roadmap-card">
-    <div class="role-title">Cloud Architect <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>AWS/GCP/Azure basics, Cloud networking, Storage, Identity management</td><td>Basic cloud deployments, Storage solutions, IAM configurations</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Cloud-native design, Serverless, Containers, Cost optimization</td><td>Scalable cloud apps, Serverless APIs, Containerized deployments</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Hybrid cloud, Multi-cloud strategies, Governance, Disaster recovery</td><td>Enterprise cloud architectures, Multi-cloud solutions, DR plans</td></tr>
-    </table>
-  </div>
+      <div class="roadmap-card">
+        <div class="role-title">Game Developer <i class="fa-solid fa-plus expand-icon"></i></div>
+        <div class="table-wrapper">
+          <table>
+            <tr><th>Timeframe</th><th>Skills & Focus</th></tr>
+            <tr><td>1 Year (Beginner)</td><td>C#/C++, Unity/Unreal basics, Physics</td></tr>
+            <tr><td>2 Years (Intermediate)</td><td>Multiplayer networking, AI, Optimization</td></tr>
+            <tr><td>3 Years (Advanced)</td><td>VR/AR, Engine Customization, Publishing</td></tr>
+          </table>
+        </div>
+      </div>
 
-  <!-- QA Engineer -->
-  <div class="roadmap-card">
-    <div class="role-title">QA Engineer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Manual testing, Bug tracking, Test case design, Basic automation (Selenium)</td><td>Test plans, Bug reports, Basic automated tests</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Automation frameworks, API testing, Performance testing, CI/CD integration</td><td>Automated test suites, API test scripts, Performance reports</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Advanced automation, Security testing, Test strategy, Test orchestration</td><td>End-to-end test pipelines, Security test suites, QA optimization</td></tr>
-    </table>
-  </div>
-
-  <!-- UI/UX Designer -->
-  <div class="roadmap-card">
-    <div class="role-title">UI/UX Designer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Design principles, Figma/Sketch, User research, Wireframing</td><td>Simple app redesigns, Personal portfolio, Basic user flows</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Prototyping, UX writing, Usability testing, Interaction design</td><td>Full app prototypes, Case studies, Collaborative projects</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Design systems, Accessibility, Leadership in design, A/B testing</td><td>Enterprise design solutions, Mentorship, Optimized user experiences</td></tr>
-    </table>
-  </div>
-
-  <!-- Database Administrator -->
-  <div class="roadmap-card">
-    <div class="role-title">Database Administrator <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>SQL basics, Relational databases (MySQL/PostgreSQL), Data modeling, Backup basics</td><td>Simple database setups, Query optimization exercises</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>NoSQL (MongoDB), Performance tuning, Replication, Security</td><td>Scalable database designs, Migration projects</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Cloud databases, Disaster recovery, Big data integration, Automation</td><td>Enterprise DB management, High-availability systems</td></tr>
-    </table>
-  </div>
-
-  <!-- Network Engineer -->
-  <div class="roadmap-card">
-    <div class="role-title">Network Engineer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Networking fundamentals, TCP/IP, Routing, Switching, Cisco basics</td><td>Basic network setups, Lab simulations</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Firewall configuration, VPNs, Wireless networks, Monitoring tools</td><td>Secure network designs, Troubleshooting projects</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>SDN, Cloud networking, Automation (Python), Security certifications</td><td>Enterprise network architectures, Optimization initiatives</td></tr>
-    </table>
-  </div>
-
-  <!-- AI Engineer -->
-  <div class="roadmap-card">
-    <div class="role-title">AI Engineer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Python, ML basics, Neural networks, Data preprocessing</td><td>Simple AI models, Chatbot prototypes</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Deep learning, Computer vision, NLP, Model training</td><td>Image recognition apps, Sentiment analysis tools</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Generative AI, Ethics, Deployment, Research papers</td><td>Production AI systems, Innovative solutions</td></tr>
-    </table>
-  </div>
-
-  <!-- Blockchain Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Blockchain Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Cryptography basics, Ethereum/Solidity, Smart contracts, Git</td><td>Simple smart contracts, Wallet apps</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Decentralized apps (DApps), Web3, Security audits</td><td>NFT platforms, DeFi prototypes</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Layer 2 solutions, Cross-chain, Governance, Scalability</td><td>Enterprise blockchain systems, Open-source contributions</td></tr>
-    </table>
-  </div>
-
-  <!-- Game Developer -->
-  <div class="roadmap-card">
-    <div class="role-title">Game Developer <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>C#/C++, Unity/Unreal basics, 2D/3D modeling, Physics</td><td>Simple 2D games, Prototypes</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Multiplayer networking, AI in games, Optimization</td><td>3D games, Mobile ports</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>VR/AR, Engine customization, Publishing</td><td>Full commercial games, Team projects</td></tr>
-    </table>
-  </div>
-
-  <!-- IT Project Manager -->
-  <div class="roadmap-card">
-    <div class="role-title">IT Project Manager <span class="expand-icon">➕</span></div>
-    <table>
-      <tr><th>Timeframe</th><th>Skills & Focus Areas</th><th>Projects & Outcomes</th></tr>
-      <tr><td>1 Year (Beginner)</td><td>Project management basics, Agile/Scrum, Tools (Jira), Communication</td><td>Small team projects, Planning exercises</td></tr>
-      <tr><td>2 Years (Intermediate)</td><td>Risk management, Budgeting, Stakeholder engagement</td><td>Medium-scale IT implementations</td></tr>
-      <tr><td>3 Years (Advanced)</td><td>Certification (PMP), Portfolio management, Leadership</td><td>Large enterprise projects, Process improvements</td></tr>
-    </table>
+    </div>
   </div>
 
   <script>
-    // Card toggle
+    // 1. Accordion Toggle for Cards
     const cards = document.querySelectorAll('.roadmap-card');
     cards.forEach(card => {
       card.addEventListener('click', (e) => {
-        // Prevent table clicks from toggling
+        // Allow clicking anywhere on the card to toggle, but prevent text selection issues
         if (e.target.tagName === 'TD' || e.target.tagName === 'TH') return;
         card.classList.toggle('active');
       });
     });
 
-    // Search filter
+    // 2. Advanced Search Filter (Hides Empty Sectors automatically)
     const searchInput = document.getElementById('search');
+    const sectors = document.querySelectorAll('.sector');
+
     searchInput.addEventListener('input', () => {
       const filter = searchInput.value.toLowerCase();
-      cards.forEach(card => {
-        const title = card.querySelector('.role-title').textContent.toLowerCase();
-        card.style.display = title.includes(filter) ? 'block' : 'none';
+      
+      sectors.forEach(sector => {
+        let hasVisibleCard = false;
+        const sectorCards = sector.querySelectorAll('.roadmap-card');
+        
+        sectorCards.forEach(card => {
+          const title = card.querySelector('.role-title').textContent.toLowerCase();
+          if (title.includes(filter)) {
+            card.style.display = 'block';
+            hasVisibleCard = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        
+        // Hide the entire sector heading if no matching cards exist inside it
+        sector.style.display = hasVisibleCard ? 'block' : 'none';
       });
     });
   </script>
