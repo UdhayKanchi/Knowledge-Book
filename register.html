@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study Portal Register</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
@@ -16,139 +16,190 @@
       margin: 0;
       padding: 0;
       height: 100vh;
-      /* Matched the hero section background from index.html */
-      background: linear-gradient(135deg, #eef2f8, #f9fbfd);
+      background: radial-gradient(circle at center, #1b0f3a 0%, #0a0616 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #333;
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated background grid for gaming feel */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background-image: 
+        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+      animation: gridMove 20s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes gridMove {
+      0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+      100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); }
     }
 
     .register-box {
-      background: #ffffff;
-      border-radius: 20px;
+      background: rgba(15, 10, 30, 0.85);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
       padding: 40px;
       width: 100%;
       max-width: 420px;
-      /* Matched the subtle shadow from the feature cards */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      /* Added a top border using the primary brand color */
-      border-top: 5px solid #5d5dff;
+      box-shadow: 0 0 40px rgba(0, 255, 204, 0.2), inset 0 0 20px rgba(255, 0, 255, 0.1);
+      border: 1px solid rgba(0, 255, 204, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cyberpunk decorative corner */
+    .register-box::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 30px;
+      height: 30px;
+      border-top: 3px solid #00ffcc;
+      border-right: 3px solid #00ffcc;
+      border-top-right-radius: 15px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 25px;
-      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 30px;
+      font-family: 'Orbitron', sans-serif;
       font-weight: 700;
-      color: #5d5dff; /* Primary brand color */
+      font-size: 28px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     label {
       display: block;
       margin-bottom: 8px;
-      color: #666; /* Subtitle color from index */
+      color: #a5b4fc;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     input {
       width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #e0e6ed;
-      border-radius: 10px;
+      padding: 14px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       font-size: 15px;
-      background-color: #eef2f8; /* Input background matches main background */
-      color: #333;
-      transition: border-color 0.3s;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      transition: all 0.3s;
     }
 
     input:focus {
       outline: none;
-      border-color: #5d5dff;
+      border-color: #00ffcc;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+      background-color: rgba(0, 255, 204, 0.05);
     }
 
     input::placeholder {
-      color: #aaa;
+      color: #64748b;
     }
 
     button {
       width: 100%;
-      padding: 14px;
-      margin-top: 15px;
+      padding: 15px;
+      margin-top: 10px;
       border: none;
-      border-radius: 50px; /* Matched pill-shape buttons from index */
+      border-radius: 8px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       cursor: pointer;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .register-btn {
-      /* Matched the main button gradient */
-      background: linear-gradient(45deg, #5d5dff, #8a8aff);
-      color: white;
-      box-shadow: 0 10px 20px rgba(93, 93, 255, 0.25);
+      background: linear-gradient(90deg, #00ffcc, #0088ff);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
     }
 
     .register-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(93, 93, 255, 0.35);
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.8);
+      color: #fff;
     }
 
     .back-btn {
-      /* Matched the secondary CTA button */
-      background: #ff6b6b;
-      color: white;
+      background: transparent;
+      color: #ff00ff;
+      border: 2px solid #ff00ff;
       margin-top: 15px;
-      box-shadow: 0 10px 20px rgba(255, 107, 107, 0.25);
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.2) inset, 0 0 15px rgba(255, 0, 255, 0.2);
     }
 
     .back-btn:hover {
-      background: #ff4c4c;
-      transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(255, 107, 107, 0.35);
+      background: rgba(255, 0, 255, 0.1);
+      box-shadow: 0 0 25px rgba(255, 0, 255, 0.5) inset, 0 0 25px rgba(255, 0, 255, 0.5);
+      transform: scale(1.02);
     }
 
     .divider {
       display: flex;
       align-items: center;
       text-align: center;
-      margin: 20px 0;
-      color: #aaa;
+      margin: 25px 0;
+      color: #64748b;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
     }
     .divider::before, .divider::after {
       content: '';
       flex: 1;
-      border-bottom: 1px solid #e0e6ed;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .divider span {
-      padding: 0 10px;
-      font-size: 0.85rem;
+      padding: 0 15px;
     }
     
     .google-btn {
-      background: white;
-      color: #333;
-      border: 1px solid #e0e6ed;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      gap: 12px;
       margin-top: 0;
+      font-family: 'Poppins', sans-serif;
+      text-transform: none;
     }
     .google-btn:hover {
-      background: #f9fbfd;
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
     }
     .google-btn img {
-      width: 20px;
+      width: 22px;
     }
   </style>
 </head>
