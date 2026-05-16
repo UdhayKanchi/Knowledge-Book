@@ -305,9 +305,10 @@
     }
 
     .course-box:hover {
-      transform: translateY(-12px);
-      border-color: rgba(0, 234, 255, 0.3);
-      box-shadow: 0 20px 40px rgba(0, 234, 255, 0.15);
+      transform: translateY(-15px) scale(1.02);
+      border-color: rgba(0, 234, 255, 0.5);
+      box-shadow: 0 25px 50px rgba(0, 234, 255, 0.25);
+      background: rgba(15, 10, 35, 0.85);
     }
 
     .course-icon {
@@ -620,10 +621,62 @@
     import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-    // Route Protection
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.replace("login.html");
+    // Search Functionality
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      
+      // Filter static course boxes
+      document.querySelectorAll('.course-box').forEach(box => {
+        const text = box.innerText.toLowerCase();
+        box.style.display = text.includes(term) ? 'block' : 'none';
+      });
+
+      // Filter dynamic note cards
+      const notesGrid = document.getElementById('notesGrid');
+      if (notesGrid) {
+        Array.from(notesGrid.children).forEach(card => {
+          const text = card.innerText.toLowerCase();
+          card.style.display = text.includes(term) ? 'block' : 'none';
+        });
+      }
+    });
+
+    // Search Functionality
+    const searchInput = document.querySelector('.search-box input');
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase().trim();
+      
+      // Filter static course boxes
+      document.querySelectorAll('.course-box').forEach(box => {
+        const title = box.querySelector('h3').innerText.toLowerCase();
+        const tags = Array.from(box.querySelectorAll('.subject-tag')).map(t => t.innerText.toLowerCase()).join(' ');
+        const isMatch = title.includes(term) || tags.includes(term);
+        
+        box.style.display = isMatch ? 'block' : 'none';
+        if (isMatch && term !== "") {
+          box.style.borderColor = "rgba(0, 234, 255, 0.6)";
+          box.style.boxShadow = "0 0 20px rgba(0, 234, 255, 0.2)";
+        } else {
+          box.style.borderColor = "rgba(255, 255, 255, 0.08)";
+          box.style.boxShadow = "0 15px 35px rgba(0, 0, 0, 0.2)";
+        }
+      });
+
+      // Filter dynamic note cards
+      const notesGrid = document.getElementById('notesGrid');
+      if (notesGrid) {
+        Array.from(notesGrid.children).forEach(card => {
+          const text = card.innerText.toLowerCase();
+          const isMatch = text.includes(term);
+          card.style.display = isMatch ? 'block' : 'none';
+          
+          if (isMatch && term !== "") {
+            card.style.borderColor = "rgba(0, 234, 255, 0.6)";
+          } else {
+            card.style.borderColor = "rgba(255, 255, 255, 0.07)";
+          }
+        });
       }
     });
 
