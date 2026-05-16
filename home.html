@@ -9,6 +9,8 @@
     href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Vanilla Tilt JS for 3D Cards -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 
   <style>
     /* Reset & Base */
@@ -27,6 +29,23 @@
       color: #fff;
       background-attachment: fixed;
       overflow-x: hidden;
+    }
+
+    /* Custom Webkit Scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #0b0f19; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 234, 255, 0.3); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00eaff; }
+
+    /* Scroll Reveal Class */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Floating Particles Background */
@@ -491,7 +510,8 @@
         <input type="text" placeholder="Search courses, notes...">
         <i class="fa-solid fa-magnifying-glass"></i>
       </div>
-      <a href="login.html" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+      <a href="admin.html" id="adminLink" style="display: none; align-items: center; justify-content: center; background: rgba(0, 234, 255, 0.2); color: #00eaff; border-color: #00eaff;" class="logout-btn"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+      <a href="#" onclick="logout()" class="logout-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
     </div>
   </div>
 
@@ -509,7 +529,7 @@
 
   <section class="courses" id="courses">
 
-    <div class="course-box">
+    <div class="course-box reveal" data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
       <div class="course-icon"><i class="fa-solid fa-laptop-code"></i></div>
       <h3>BSc CS</h3>
       <a href="roadmaps.html" class="roadmap-btn"><i class="fa-solid fa-map-location-dot"></i> View Roadmaps</a>
@@ -567,6 +587,16 @@
 
   </section>
 
+  <!-- Dynamic Notes Section -->
+  <section id="dynamicNotesSection" style="display: none; padding: 40px 50px; max-width: 1300px; margin: 0 auto;">
+    <h2 style="font-size: 30px; font-weight: 800; margin-bottom: 30px; text-align: center; background: linear-gradient(to right, #00eaff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+      <i class="fa-solid fa-file-pdf"></i> Available Notes
+    </h2>
+    <div id="notesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+      <!-- Notes will be injected here -->
+    </div>
+  </section>
+
   <footer>
     <p>© 2026 Knowledge Book. Designed with ❤️</p>
     <div class="social-links">
@@ -581,7 +611,10 @@
   <div class="toast" id="toastMsg"><i class="fa-solid fa-bell"></i> <span id="toastText">Materials coming soon!</span>
   </div>
 
-  <script>
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
     // Feature 1: Dynamic Greeting based on time of day
     const setGreeting = () => {
       const hour = new Date().getHours();
@@ -608,20 +641,85 @@
 
     // Feature 3: Toast Notification logic
     let toastTimeout;
-    function showToast(message) {
+    window.showToast = function(message) {
       const toast = document.getElementById('toastMsg');
       const toastText = document.getElementById('toastText');
 
       toastText.innerText = message;
       toast.classList.add('show');
 
-      // Clear timeout so it doesn't hide too early if clicked rapidly
       clearTimeout(toastTimeout);
 
       toastTimeout = setTimeout(() => {
         toast.classList.remove('show');
-      }, 3000); // Hides after 3 seconds
+      }, 3000); 
     }
+
+    // Feature 4: Check Admin Status
+    if (localStorage.getItem("isAdmin") === "true") {
+      document.getElementById("adminLink").style.display = "inline-flex";
+    }
+
+    window.logout = function() {
+      localStorage.removeItem('isAdmin');
+      localStorage.removeItem('currentUser');
+      window.location.href = "login.html";
+    }
+
+    // Feature 5: Load Dynamic Notes from Firebase Firestore
+    async function loadNotes() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "notes"));
+        const notesDB = [];
+        querySnapshot.forEach((doc) => {
+          notesDB.push(doc.data());
+        });
+
+        if (notesDB.length > 0) {
+          document.getElementById("dynamicNotesSection").style.display = "block";
+          const notesGrid = document.getElementById("notesGrid");
+          notesGrid.innerHTML = ""; // clear existing
+
+          notesDB.forEach(note => {
+            const noteCard = document.createElement("div");
+            noteCard.className = "course-box";
+            noteCard.style.padding = "20px";
+            noteCard.style.textAlign = "left";
+            
+            noteCard.innerHTML = `
+              <div style="font-size: 12px; color: #a5b4fc; font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">
+                ${note.subject}
+              </div>
+              <h3 style="font-size: 20px; margin-bottom: 15px; color: #fff;">${note.title}</h3>
+              <div style="font-size: 14px; color: #94a3b8; margin-bottom: 20px;">
+                <i class="fa-regular fa-file-pdf"></i> ${note.fileName}
+              </div>
+              <a href="${note.downloadURL}" target="_blank" class="roadmap-btn" style="margin: 0; background: linear-gradient(135deg, #00eaff, #0072ff);">
+                <i class="fa-solid fa-download"></i> Download Note
+              </a>
+            `;
+            notesGrid.appendChild(noteCard);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching notes from Firebase: ", error);
+      }
+    }
+
+    // Call on load
+    loadNotes();
+
+    // Feature 6: Scroll Reveal Animations
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach((el) => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
   </script>
 
 </body>

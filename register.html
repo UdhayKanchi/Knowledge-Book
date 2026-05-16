@@ -113,6 +113,43 @@
       transform: translateY(-3px);
       box-shadow: 0 15px 30px rgba(255, 107, 107, 0.35);
     }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: #aaa;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e0e6ed;
+    }
+    .divider span {
+      padding: 0 10px;
+      font-size: 0.85rem;
+    }
+    
+    .google-btn {
+      background: white;
+      color: #333;
+      border: 1px solid #e0e6ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-top: 0;
+    }
+    .google-btn:hover {
+      background: #f9fbfd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+    .google-btn img {
+      width: 20px;
+    }
   </style>
 </head>
 
@@ -133,31 +170,96 @@
         <input type="password" id="password" placeholder="Enter your password" />
       </div>
       <button type="submit" class="register-btn">Register</button>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <button type="button" class="google-btn" id="googleRegisterBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Sign up with Google
+      </button>
+
       <button type="button" class="back-btn" onclick="goBack()">Back to Login</button>
     </form>
   </div>
 
-  <script>
-    document.getElementById("registerForm").addEventListener("submit", function (e) {
+  <script type="module">
+  <script type="module">
+    import { auth, googleProvider, db } from './firebase-config.js';
+    import { createUserWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const name = document.getElementById("name").value.trim();
-      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("username").value.trim(); // "username" input is used for email
       const password = document.getElementById("password").value.trim();
 
-      if (name === "" || username === "" || password === "") {
+      if (name === "" || email === "" || password === "") {
         alert("Please fill in all details.");
         return;
       }
 
-      // Dummy registration success logic
-      alert(`Registration successful! Welcome to the platform, ${name}. Please log in to continue.`);
-      
-      // Redirects to login page after successful mock registration
-      window.location.href = "login.html"; 
+      try {
+        // 1. Create User in Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // 2. Save User Details to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          name: name,
+          email: email,
+          joinDate: new Date().toLocaleDateString()
+        });
+
+        alert(`Registration successful! Welcome to the platform, ${name}. Please log in to continue.`);
+        window.location.href = "login.html"; 
+
+      } catch (error) {
+        console.error("Error signing up:", error);
+        alert(error.message);
+      }
     });
 
-    function goBack() {
-      // Ensured this points to the login page
+    document.getElementById("googleRegisterBtn").addEventListener("click", async function() {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+
+        // Check if user exists in Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        
+        // If it's a new user, save their details
+        if (!userDoc.exists()) {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name: user.displayName || "Google User",
+            email: user.email,
+            joinDate: new Date().toLocaleDateString()
+          });
+        }
+
+        // Admin verification
+        if (user.email === "admin@knowledgebook.com") {
+          localStorage.setItem("isAdmin", "true");
+          alert("Registration/Login successful! Welcome Admin.");
+        } else {
+          localStorage.setItem("isAdmin", "false");
+          alert("Registration/Login successful!");
+        }
+        
+        window.location.href = "home.html";
+
+      } catch (error) {
+        console.error("Error with Google Sign-Up:", error);
+        alert("Google Sign-Up failed: " + error.message);
+      }
+    });
+
+    // We have to bind goBack globally since this is a module now
+    window.goBack = function() {
       window.location.href = "login.html";
     }
   </script>

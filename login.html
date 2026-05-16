@@ -113,6 +113,43 @@
       transform: translateY(-3px);
       box-shadow: 0 15px 30px rgba(255, 107, 107, 0.35);
     }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 20px 0;
+      color: #aaa;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e0e6ed;
+    }
+    .divider span {
+      padding: 0 10px;
+      font-size: 0.85rem;
+    }
+    
+    .google-btn {
+      background: white;
+      color: #333;
+      border: 1px solid #e0e6ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      margin-top: 0;
+    }
+    .google-btn:hover {
+      background: #f9fbfd;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+    .google-btn img {
+      width: 20px;
+    }
   </style>
 </head>
 
@@ -129,42 +166,90 @@
         <input type="password" id="password" name="password" placeholder="Enter your password" />
       </div>
       <button type="submit" class="login-btn">Login</button>
+      
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <button type="button" class="google-btn" id="googleLoginBtn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Sign in with Google
+      </button>
+
       <button type="button" class="register-btn" onclick="redirectToRegister()">Create Account</button>
     </form>
   </div>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const usernameInput = document.getElementById("username").value.trim();
-      const passwordInput = document.getElementById("password").value.trim();
+  <script type="module">
+    import { auth, googleProvider } from './firebase-config.js';
+    import { signInWithEmailAndPassword, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { db } from './firebase-config.js';
 
-      if (usernameInput === "" || passwordInput === "") {
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("username").value.trim(); // "username" is the email input
+      const password = document.getElementById("password").value.trim();
+
+      if (email === "" || password === "") {
         alert("Please enter your details.");
         return;
       }
 
-      // 3 Dummy Credentials
-      const user1 = { username: "uday123@gmail.com", password: "123456789" };
-      const user2 = { username: "mani@gmail.com", password: "987654321" };
-      const user3 = { username: "admin", password: "adminpass" };
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-      // Testing credentials using the == operator
-      if (usernameInput == user1.username && passwordInput == user1.password) {
-        alert("Login successful! Welcome Uday.");
-        window.location.href = "home.html";
-      } else if (usernameInput == user2.username && passwordInput == user2.password) {
-        alert("Login successful! Welcome Bharath.");
-        window.location.href = "home.html";
-      } else if (usernameInput == user3.username && passwordInput == user3.password) {
-        alert("Login successful! Welcome Admin.");
-        window.location.href = "home.html";
-      } else {
-        alert("Login failed: Invalid email/username or password.");
+        // Admin verification
+        if (user.email === "admin@knowledgebook.com") {
+          localStorage.setItem("isAdmin", "true");
+          alert("Login successful! Welcome Admin.");
+          // You can route to admin.html directly or home.html where they see the button
+          window.location.href = "home.html";
+        } else {
+          localStorage.setItem("isAdmin", "false");
+          alert("Login successful!");
+          window.location.href = "home.html";
+        }
+      } catch (error) {
+        console.error("Error signing in:", error);
+        alert("Login failed: " + error.message);
       }
     });
 
-    function redirectToRegister() {
+    document.getElementById("googleLoginBtn").addEventListener("click", async function() {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        const user = result.user;
+
+        // Check if user exists in Firestore, if not, create them
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (!userDoc.exists()) {
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name: user.displayName || "Google User",
+            email: user.email,
+            joinDate: new Date().toLocaleDateString()
+          });
+        }
+
+        // Admin verification
+        if (user.email === "admin@knowledgebook.com") {
+          localStorage.setItem("isAdmin", "true");
+          alert("Google Login successful! Welcome Admin.");
+        } else {
+          localStorage.setItem("isAdmin", "false");
+          alert("Google Login successful!");
+        }
+        window.location.href = "home.html";
+
+      } catch (error) {
+        console.error("Error with Google Sign-In:", error);
+        alert("Google Sign-In failed: " + error.message);
+      }
+    });
+
+    window.redirectToRegister = function() {
       window.location.href = "register.html";
     }
   </script>
