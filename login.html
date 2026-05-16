@@ -220,7 +220,15 @@
         }
       } catch (error) {
         console.error("Error signing in:", error);
-        alert("Login failed: " + error.message);
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          alert("Login failed: Invalid email or password. Please check your credentials and try again.");
+        } else if (error.code === 'auth/too-many-requests') {
+          alert("Login failed: Too many unsuccessful attempts. Please try again later.");
+        } else if (error.code === 'auth/invalid-email') {
+          alert("Login failed: Invalid email address format.");
+        } else {
+          alert("Login failed. Please try again.");
+        }
       }
     });
 
@@ -252,7 +260,7 @@
 
       } catch (error) {
         console.error("Error with Google Sign-In:", error);
-        alert("Google Sign-In failed: " + error.message);
+        alert("Google Sign-In failed. Please try again.");
       }
     });
 

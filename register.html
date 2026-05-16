@@ -226,7 +226,15 @@
 
       } catch (error) {
         console.error("Error signing up:", error);
-        alert(error.message);
+        if (error.code === 'auth/email-already-in-use') {
+          alert("Registration failed: This email is already registered. Please log in.");
+        } else if (error.code === 'auth/weak-password') {
+          alert("Registration failed: Password is too weak. Please use at least 6 characters.");
+        } else if (error.code === 'auth/invalid-email') {
+          alert("Registration failed: Invalid email address format.");
+        } else {
+          alert("Registration failed. Please try again.");
+        }
       }
     });
 
@@ -261,7 +269,7 @@
 
       } catch (error) {
         console.error("Error with Google Sign-Up:", error);
-        alert("Google Sign-Up failed: " + error.message);
+        alert("Google Sign-Up failed. Please try again.");
       }
     });
 
