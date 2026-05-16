@@ -309,16 +309,19 @@
 
 <body>
 
-  <!-- Security Check is kept simple for UI purposes, real security requires Firebase Auth state listener, but for this demo localStorage flag is used alongside backend -->
+  <!-- Route Protection via Firebase Auth -->
   <script type="module">
-    import { db, storage } from './firebase-config.js';
+    import { auth, db, storage } from './firebase-config.js';
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import { ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
-    if (localStorage.getItem("isAdmin") !== "true") {
-      alert("Access Denied: You are not an administrator.");
-      window.location.href = "home.html";
-    }
+    onAuthStateChanged(auth, (user) => {
+      if (!user || user.email !== "knowledgebook@admin.in") {
+        alert("Access Denied: You are not authorized.");
+        window.location.replace("index.html");
+      }
+    });
 
     // Tab Switching Logic
     const sections = ['dashboard', 'upload', 'notes', 'users'];
@@ -340,9 +343,14 @@
       if(tabId === 'users' || tabId === 'dashboard') loadUsersData();
     }
 
-    window.logout = function() {
-      localStorage.removeItem('isAdmin');
-      window.location.href = "index.html";
+    window.logout = async function() {
+      try {
+        await signOut(auth);
+        localStorage.removeItem('isAdmin');
+        window.location.replace("index.html");
+      } catch (error) {
+        console.error("Error signing out: ", error);
+      }
     }
 
     // --- FIREBASE LOGIC ---
