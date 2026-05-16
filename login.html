@@ -201,7 +201,7 @@
         const user = userCredential.user;
 
         // Admin verification
-        if (user.email === "admin@knowledgebook.com") {
+        if (user.email === "knowledgebook@admin.in") {
           localStorage.setItem("isAdmin", "true");
           alert("Login successful! Welcome Admin.");
           // You can route to admin.html directly or home.html where they see the button
@@ -234,7 +234,7 @@
         }
 
         // Admin verification
-        if (user.email === "admin@knowledgebook.com") {
+        if (user.email === "knowledgebook@admin.in") {
           localStorage.setItem("isAdmin", "true");
           alert("Google Login successful! Welcome Admin.");
         } else {
