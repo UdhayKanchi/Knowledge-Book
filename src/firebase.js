@@ -17,4 +17,6 @@ export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+storage.maxUploadRetryTime = 8000;
+storage.maxOperationRetryTime = 8000;
 export const ADMIN_EMAIL = "knowledgebook@admin.in";

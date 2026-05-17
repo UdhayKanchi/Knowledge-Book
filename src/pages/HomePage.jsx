@@ -39,6 +39,27 @@ export default function HomePage() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
+  // 🎯 Local Storage nundi live notes & interview data arrays sync cheyali ra
+  const [localNotes, setLocalNotes] = useState([]);
+  const [localIqPdfs, setLocalIqPdfs] = useState([]);
+
+  useEffect(() => {
+    const fetchLocalData = () => {
+      try {
+        const savedNotes = localStorage.getItem("kb_production_notes");
+        const savedIqs = localStorage.getItem("kb_production_iqPdfs");
+        
+        setLocalNotes(savedNotes ? JSON.parse(savedNotes) : []);
+        setLocalIqPdfs(savedIqs ? JSON.parse(savedIqs) : []);
+      } catch (err) {
+        console.error("Failed to read local storage vectors:", err);
+      }
+    };
+
+    // Active component tab execute / shift ayyinappudalla refresh avthundi ra
+    fetchLocalData();
+  }, [active]);
+
   const logout = async () => { await signOut(auth); navigate("/login"); };
   const name = user?.displayName || user?.email?.split("@")[0] || "Student";
   const initials = name.charAt(0).toUpperCase();
@@ -86,8 +107,10 @@ export default function HomePage() {
           {active === "roadmaps" && <RoadmapsSection />}
           {active === "tools" && <ToolsSection />}
           {active === "sticky" && <StickyNotesSection />}
-          {active === "notes" && <NotesSection />}
-          {active === "interview" && <InterviewSection />}
+          
+          {/* 🎯 AdminPage data automatic ga sub-sections ki map chesthunnam ra */}
+          {active === "notes" && <NotesSection notesData={localNotes} />}
+          {active === "interview" && <InterviewSection interviewData={localIqPdfs} />}
         </div>
       </div>
     </div>
