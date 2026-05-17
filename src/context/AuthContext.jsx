@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, ADMIN_EMAIL } from "../firebase";
 
@@ -18,10 +18,9 @@ export function AuthProvider({ children }) {
           const snap = await getDoc(userRef);
           if (!snap.exists()) {
             const emailPrefix = u.email ? u.email.split("@")[0] : "";
-            const derivedName = emailPrefix 
-              ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1) 
+            const derivedName = emailPrefix
+              ? emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1)
               : "Student User";
-            
             await setDoc(userRef, {
               uid: u.uid,
               name: u.displayName || derivedName,
@@ -29,7 +28,6 @@ export function AuthProvider({ children }) {
               role: u.email === ADMIN_EMAIL ? "admin" : "student",
               joinDate: new Date().toLocaleDateString(),
             });
-            console.log("Self-healing synced user record for:", u.email);
           }
         } catch (err) {
           console.error("Self-healing Firestore check failed:", err);
@@ -39,8 +37,16 @@ export function AuthProvider({ children }) {
     return unsub;
   }, []);
 
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading: user === undefined }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading: user === undefined, logout }}>
       {children}
     </AuthContext.Provider>
   );

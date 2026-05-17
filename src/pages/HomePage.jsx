@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import RoadmapsSection from "../components/sections/RoadmapsSection";
@@ -28,8 +29,18 @@ const TITLES = {
 function Clock() {
   const [time, setTime] = useState("");
   useEffect(() => {
-    const tick = () => setTime(new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true }));
-    tick(); const id = setInterval(tick, 1000); return () => clearInterval(id);
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString("en-IN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        })
+      );
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
   }, []);
   return <div className="clock-badge">{time}</div>;
 }
@@ -39,28 +50,58 @@ export default function HomePage() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
-  // 🎯 Local Storage nundi live notes & interview data arrays sync cheyali ra
-  const [localNotes, setLocalNotes] = useState([]);
-  const [localIqPdfs, setLocalIqPdfs] = useState([]);
+  const [cloudNotes, setCloudNotes] = useState([]);
+  const [cloudIqPdfs, setCloudIqPdfs] = useState([]);
+  const [notesLoading, setNotesLoading] = useState(true);
+  const [iqLoading, setIqLoading] = useState(true);
 
+  // ✅ Real-time Firestore listeners — syncs instantly across ALL devices
   useEffect(() => {
-    const fetchLocalData = () => {
-      try {
-        const savedNotes = localStorage.getItem("kb_production_notes");
-        const savedIqs = localStorage.getItem("kb_production_iqPdfs");
-        
-        setLocalNotes(savedNotes ? JSON.parse(savedNotes) : []);
-        setLocalIqPdfs(savedIqs ? JSON.parse(savedIqs) : []);
-      } catch (err) {
-        console.error("Failed to read local storage vectors:", err);
+    if (!user) return;
+
+    // Real-time listener for Notes PDFs — no localStorage, pure Firebase
+    const notesUnsub = onSnapshot(
+      collection(db, "notes"),
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        // Sort newest first using createdAt timestamp if available
+        data.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        setCloudNotes(data);
+        setNotesLoading(false);
+      },
+      (err) => {
+        console.error("Notes real-time listener error:", err);
+        setNotesLoading(false);
       }
+    );
+
+    // Real-time listener for Interview PDFs
+    const iqUnsub = onSnapshot(
+      collection(db, "interviewPdfs"),
+      (snap) => {
+        const data = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        data.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        setCloudIqPdfs(data);
+        setIqLoading(false);
+      },
+      (err) => {
+        console.error("IQ PDFs real-time listener error:", err);
+        setIqLoading(false);
+      }
+    );
+
+    // Cleanup listeners when component unmounts or user changes
+    return () => {
+      notesUnsub();
+      iqUnsub();
     };
+  }, [user]);
 
-    // Active component tab execute / shift ayyinappudalla refresh avthundi ra
-    fetchLocalData();
-  }, [active]);
+  const logout = async () => {
+    await signOut(auth);
+    navigate("/login");
+  };
 
-  const logout = async () => { await signOut(auth); navigate("/login"); };
   const name = user?.displayName || user?.email?.split("@")[0] || "Student";
   const initials = name.charAt(0).toUpperCase();
   const { title, sub } = TITLES[active] || {};
@@ -71,15 +112,23 @@ export default function HomePage() {
       <aside className="sidebar">
         <div className="sidebar-logo">KB</div>
         {NAV.map((n) => (
-          <a key={n.id} className={`nav-item${active === n.id ? " active" : ""}`} onClick={() => setActive(n.id)}>
-            <span className="nav-icon"><i className={`fa-solid ${n.icon}`} /></span>
+          <a
+            key={n.id}
+            className={`nav-item${active === n.id ? " active" : ""}`}
+            onClick={() => setActive(n.id)}
+          >
+            <span className="nav-icon">
+              <i className={`fa-solid ${n.icon}`} />
+            </span>
             <span className="nav-label">{n.label}</span>
           </a>
         ))}
         <div className="nav-sep" />
         {isAdmin && (
           <a className="nav-item" onClick={() => navigate("/admin")}>
-            <span className="nav-icon"><i className="fa-solid fa-gauge" /></span>
+            <span className="nav-icon">
+              <i className="fa-solid fa-gauge" />
+            </span>
             <span className="nav-label">Admin Panel</span>
           </a>
         )}
@@ -89,7 +138,8 @@ export default function HomePage() {
       <div className="main">
         <div className="topbar">
           <div className="topbar-left">
-            <h1>{title}</h1><p>{sub}</p>
+            <h1>{title}</h1>
+            <p>{sub}</p>
           </div>
           <div className="topbar-right">
             <Clock />
@@ -107,10 +157,13 @@ export default function HomePage() {
           {active === "roadmaps" && <RoadmapsSection />}
           {active === "tools" && <ToolsSection />}
           {active === "sticky" && <StickyNotesSection />}
-          
-          {/* 🎯 AdminPage data automatic ga sub-sections ki map chesthunnam ra */}
-          {active === "notes" && <NotesSection notesData={localNotes} />}
-          {active === "interview" && <InterviewSection interviewData={localIqPdfs} />}
+          {/* ✅ Pass Firebase data + loading state to child sections */}
+          {active === "notes" && (
+            <NotesSection notesData={cloudNotes} loading={notesLoading} />
+          )}
+          {active === "interview" && (
+            <InterviewSection interviewData={cloudIqPdfs} loading={iqLoading} />
+          )}
         </div>
       </div>
     </div>

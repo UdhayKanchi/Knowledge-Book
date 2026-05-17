@@ -97,14 +97,15 @@ export default function AdminPage() {
     }
     setUploading(true);
     try {
-      // Direct text document schema records injection parameter checks updates pipeline 🚀
+      // ✅ Store to Firebase Firestore globally — visible on all devices
       await addDoc(collection(db, "notes"), {
         title: nForm.title,
         subject: nForm.subject,
         type: nForm.type,
         desc: nForm.desc,
         downloadURL: nForm.driveUrl,
-        uploadDate: new Date().toLocaleDateString("en-IN")
+        uploadDate: new Date().toLocaleDateString("en-IN"),
+        createdAt: Date.now(),
       });
       showToast("Academic document note reference pointer published globally! ✅");
       setNForm({ title: "", subject: "", type: "notes", desc: "", driveUrl: "" });
@@ -123,12 +124,14 @@ export default function AdminPage() {
     }
     setUploading(true);
     try {
+      // ✅ Store to Firebase Firestore globally — visible on all devices
       await addDoc(collection(db, "interviewPdfs"), {
         title: iForm.title,
         category: iForm.category,
         desc: iForm.desc,
         downloadURL: iForm.driveUrl,
-        uploadDate: new Date().toLocaleDateString("en-IN")
+        uploadDate: new Date().toLocaleDateString("en-IN"),
+        createdAt: Date.now(),
       });
       showToast("Corporate Interview reference packet roadmap vector published globally! ✅");
       setIForm({ title: "", category: "", desc: "", driveUrl: "" });
